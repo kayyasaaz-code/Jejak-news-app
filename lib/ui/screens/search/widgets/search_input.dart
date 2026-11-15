@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app/providers/explore_preferences_provider.dart';
+import 'package:news_app/providers/search_provider.dart';
 
-/// TODO: Ubah SearchInput menjadi ConsumerStatefulWidget
-class SearchInput extends StatefulWidget {
+class SearchInput extends ConsumerStatefulWidget {
   const SearchInput({super.key});
 
   @override
-  State<SearchInput> createState() => _SearchInputState();
+  ConsumerState<SearchInput> createState() => _SearchInputState();
 }
 
-class _SearchInputState extends State<SearchInput> {
+class _SearchInputState extends ConsumerState<SearchInput> {
   final _controller = TextEditingController();
 
   @override
@@ -19,20 +21,32 @@ class _SearchInputState extends State<SearchInput> {
 
   void _clear() {
     _controller.clear();
-    // TODO: Hapus query dari searchQueryProvider
+    ref.read(searchQueryProvider.notifier).clear();
+  }
+
+  void _submitSearch(String value) {
+    final trimmed = value.trim();
+    if (trimmed.isEmpty) return;
+    ref.read(searchQueryProvider.notifier).submit(trimmed);
+    ref.read(searchHistoryProvider.notifier).addKeyword(trimmed);
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Dengarkan perubahan searchQueryProvider dari luar
-    // ref.listen(searchQueryProvider, (_, next) {
-    //   if (_controller.text != next) _controller.text = next;
-    // });
+    ref.listen(searchQueryProvider, (_, next) {
+      if (_controller.text != next) {
+        _controller.text = next;
+        _controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: _controller.text.length),
+        );
+      }
+    });
+
     final scheme = Theme.of(context).colorScheme;
 
     return SearchBar(
       controller: _controller,
-      hintText: 'Cari berita, topik, atau tokoh',
+      hintText: 'Cari MEXT, IELTS, hackathon, exchange...',
       elevation: const WidgetStatePropertyAll(0),
       backgroundColor: WidgetStatePropertyAll(scheme.surfaceContainerHigh),
       padding: const WidgetStatePropertyAll(
@@ -40,9 +54,7 @@ class _SearchInputState extends State<SearchInput> {
       ),
       leading: const Icon(Icons.search_rounded),
       textInputAction: TextInputAction.search,
-      onSubmitted: (value) {
-        // TODO: Simpan value ke searchQueryProvider
-      },
+      onSubmitted: _submitSearch,
       trailing: [
         ListenableBuilder(
           listenable: _controller,

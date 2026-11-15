@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app/providers/bookmark_provider.dart';
+import 'package:news_app/providers/rencanaku_provider.dart';
 
-// TODO: Ubah menjadi ConsumerWidget saat Riverpod diimplementasikan
-class AppNavigationBar extends StatelessWidget {
+class AppNavigationBar extends ConsumerWidget {
   const AppNavigationBar({
     super.key,
     required this.currentIndex,
@@ -12,9 +14,10 @@ class AppNavigationBar extends StatelessWidget {
   final ValueChanged<int> onTap;
 
   @override
-  Widget build(BuildContext context) {
-    // TODO: Ambil jumlah bookmark dari provider
-    final bookmarkCount = 0;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final planCount = ref.watch(rencanakuProvider).length;
+    final bookmarkCount =
+        ref.watch(bookmarksProvider).asData?.value.length ?? 0;
 
     return NavigationBar(
       selectedIndex: currentIndex,
@@ -28,7 +31,20 @@ class AppNavigationBar extends StatelessWidget {
         const NavigationDestination(
           icon: Icon(Icons.explore_outlined),
           selectedIcon: Icon(Icons.explore_rounded),
-          label: 'Jelajahi',
+          label: 'Explore',
+        ),
+        NavigationDestination(
+          icon: Badge.count(
+            count: planCount,
+            isLabelVisible: planCount > 0,
+            child: const Icon(Icons.flag_outlined),
+          ),
+          selectedIcon: Badge.count(
+            count: planCount,
+            isLabelVisible: planCount > 0,
+            child: const Icon(Icons.flag_rounded),
+          ),
+          label: 'Rencanaku',
         ),
         NavigationDestination(
           icon: Badge.count(
@@ -36,8 +52,12 @@ class AppNavigationBar extends StatelessWidget {
             isLabelVisible: bookmarkCount > 0,
             child: const Icon(Icons.bookmarks_outlined),
           ),
-          selectedIcon: const Icon(Icons.bookmarks_rounded),
-          label: 'Tersimpan',
+          selectedIcon: Badge.count(
+            count: bookmarkCount,
+            isLabelVisible: bookmarkCount > 0,
+            child: const Icon(Icons.bookmarks_rounded),
+          ),
+          label: 'Bookmark',
         ),
       ],
     );

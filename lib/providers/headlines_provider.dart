@@ -1,11 +1,27 @@
-// import '../data/models/article.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:news_app/core/constants/news_category.dart';
+import 'package:news_app/data/models/article.dart';
+import 'package:news_app/providers/dependency_provider.dart';
 
-// TODO 8: Implementasi HeadlinesProvider
-// 1. Buat class HeadlinesNotifier extends AsyncNotifier<List<Article>>
-// 2. Di dalam build(), panggil NewsRepository.getTopHeadlines()
-// 3. Buat fungsi fetchHeadlines(String category) untuk memuat ulang data dengan kategori berbeda
-// 4. Buat headlinesProvider (AsyncNotifierProvider) untuk digunakan di UI
+class SelectedCategoryNotifier extends Notifier<NewsCategory> {
+  @override
+  NewsCategory build() => NewsCategory.scholarships;
 
-class HeadlinesNotifier {
-  // Siswi akan membuat AsyncNotifier untuk Riverpod
+  void select(NewsCategory category) => state = category;
 }
+
+final selectedCategoryProvider =
+    NotifierProvider<SelectedCategoryNotifier, NewsCategory>(
+      SelectedCategoryNotifier.new,
+    );
+
+// Alias agar kode UI lama yang memakai huruf kapital di awal tetap berjalan tanpa error
+final SelectedCategoryProvider = selectedCategoryProvider;
+
+// Mengambil artikel per kategori pendidikan (otomatis di-cache oleh Riverpod .family)
+final headlinesProvider = FutureProvider.family<List<Article>, NewsCategory>((
+  ref,
+  category,
+) {
+  return ref.watch(newsRepositoryProvider).getByCategory(category);
+});

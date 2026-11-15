@@ -1,55 +1,89 @@
-// TODO 1: Buat class Article
-// 1. Buat class dengan properti: title, sourceName, author, description, url, imageUrl, publishedAt, content
-// 2. Buat factory constructor `fromJson(Map<String, dynamic> json)`
-// 3. Buat getter `cleanContent` untuk menghapus teks "[+... chars]" dari content
-// 4. Buat getter `isValid` untuk memastikan artikel bukan "[Removed]"
-
 class Article {
-  // Siswi akan melengkapi bagian ini.
   const Article({
     required this.title,
     required this.sourceName,
     required this.url,
     required this.publishedAt,
-    this.author,
+    this.sourceUrl,
     this.description,
     this.imageUrl,
     this.content,
+    this.category = 'Education',
   });
 
   final String title;
   final String sourceName;
+  final String? sourceUrl;
   final String url;
-  final DateTime publishedAt;
-  final String? author;
+  final DateTime? publishedAt;
   final String? description;
   final String? imageUrl;
   final String? content;
+  final String category;
 
-  // TODO: Implementasi cleanContent
-  String get cleanContent => content ?? '';
+  // Membersihkan potongan karakter di akhir cuplikan konten GNews (misal: "... [1234 chars]")
+  String get cleanContent =>
+      (content ?? '').replaceAll(RegExp(r'\s*\[\d+\s*chars\]$'), '').trim();
 
-  // TODO: Implementasi isValid
-  bool get isValid => true;
+  bool get isValid =>
+      title.isNotEmpty && title != '[Removed]' && url.isNotEmpty;
 
-  // TODO: Implementasi fromJson
-  factory Article.fromJson(Map<String, dynamic> json) {
-    return dummy;
+  @override
+  bool operator ==(Object other) => other is Article && other.url == url;
+
+  @override
+  int get hashCode => url.hashCode;
+
+  Article copyWith({String? category}) {
+    return Article(
+      title: title,
+      sourceName: sourceName,
+      sourceUrl: sourceUrl,
+      url: url,
+      publishedAt: publishedAt,
+      description: description,
+      imageUrl: imageUrl,
+      content: content,
+      category: category ?? this.category,
+    );
   }
 
-  // TODO: Implementasi toJson
-  Map<String, dynamic> toJson() {
-    return {};
+  factory Article.fromJson(Map<String, dynamic> json, {String? category}) {
+    final source = json['source'] as Map<String, dynamic>?;
+    return Article(
+      title: json['title'] as String? ?? '',
+      url: json['url'] as String? ?? '',
+      sourceName: source?['name'] as String? ?? 'Tanpa Sumber',
+      sourceUrl: source?['url'] as String?,
+      publishedAt: DateTime.tryParse(json['publishedAt'] as String? ?? ''),
+      description: json['description'] as String?,
+      // GNews menggunakan key 'image' (bukan 'urlToImage')
+      imageUrl: json['image'] as String?,
+      content: json['content'] as String?,
+      category: category ?? (json['category'] as String? ?? 'Education'),
+    );
   }
 
-  // Dummy article untuk UI sementara
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'url': url,
+    'source': {'name': sourceName, if (sourceUrl != null) 'url': sourceUrl},
+    'description': description,
+    'content': content,
+    'image': imageUrl,
+    'publishedAt': publishedAt?.toIso8601String(),
+    'category': category,
+  };
+
   static final dummy = Article(
-    title: 'Berita Menarik Hari Ini',
-    sourceName: 'Warta News',
+    title: 'Beasiswa MEXT Jepang 2027 Resmi Dibuka untuk Pelajar',
+    sourceName: 'JEJAK Education',
     url: 'https://example.com',
     publishedAt: DateTime.now(),
-    description: 'Ini adalah deskripsi berita sementara sebelum API disambungkan.',
+    description:
+        'Informasi lengkap mengenai pendaftaran beasiswa penuh ke Jepang.',
     imageUrl: 'https://picsum.photos/400/200',
-    content: 'Isi konten berita yang lebih panjang akan muncul di sini.',
+    content: 'Persiapkan dokumen akademik dan sertifikat bahasa sejak dini.',
+    category: 'Scholarships',
   );
 }

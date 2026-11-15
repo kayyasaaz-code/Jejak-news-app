@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'widgets/search_input.dart';
 import 'widgets/search_results.dart';
 
-/// Halaman Jelajahi: kolom pencarian + hasil / saran topik.
+/// Halaman Explore: Search Bar + Search History + Categories + My Interests + For You.
 class SearchScreen extends StatelessWidget {
   const SearchScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
+    final theme = Theme.of(context);
 
     return SafeArea(
       bottom: false,
@@ -18,7 +18,19 @@ class SearchScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
-            child: Text('Jelajahi', style: textTheme.headlineMedium),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Explore', style: theme.textTheme.headlineMedium),
+                const SizedBox(height: 2),
+                Text(
+                  'Temukan beasiswa, kompetisi, dan peluang belajarmu',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
           ),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 16),
