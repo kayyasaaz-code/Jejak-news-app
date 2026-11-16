@@ -29,27 +29,30 @@ flutter:
   assets:
     # Berisi API key. File ini di-ignore oleh git (lihat .env.example).
     - .env
-
-# Logo aplikasi → jalankan: dart run flutter_launcher_icons
+# Logo aplikasi
 flutter_launcher_icons:
-  android: true
+  android: "launcher_icon"
   ios: true
-  image_path: assets/logo/app_icon.png
-  adaptive_icon_background: "#F6F6F3"
-  adaptive_icon_foreground: assets/logo/app_icon_foreground.png
   remove_alpha_ios: true
+
+  image_path: "assets/logo/ic_launcher.png"
+
+  adaptive_icon_background: "assets/logo/ic_launcher_background.png"
+  adaptive_icon_foreground: "assets/logo/ic_launcher_foreground.png"
+
+  adaptive_icon_monochrome: "assets/logo/ic_launcher_monochrome.png"
+
+  min_sdk_android: 21
+  web:
+    generate: true
+    image_path: "assets/logo/ic_launcher.png"
 
 # Splash screen native → jalankan: dart run flutter_native_splash:create
 flutter_native_splash:
-  color: "#F6F6F3"
-  color_dark: "#121417"
-  image: assets/logo/splash_logo.png
-  image_dark: assets/logo/splash_logo.png
+  color: "#DCE3DC"
+  image: "assets/logo/ic_launcher_foreground.png"
   android_12:
-    color: "#F6F6F3"
-    color_dark: "#121417"
-    image: assets/logo/splash_logo_android12.png
-    image_dark: assets/logo/splash_logo_android12.png
-    icon_background_color: "#F6F6F3"
-    icon_background_color_dark: "#121417"
+    color: "#DCE3DC"
+    image: "assets/logo/ic_launcher_foreground.png"
+    icon_background_color: "#DCE3DC"
   fullscreen: false
