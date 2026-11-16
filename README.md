@@ -1,28 +1,78 @@
-# Warta News App - Starter Project
+Jejak — Jejak Langkah Pendidikanmu
 
-Selamat datang di repositori Starter untuk pembuatan aplikasi **Warta**. Proyek ini digunakan sebagai _Project-Based Learning_ (PBL) bagi siswi SMK untuk mempelajari pembuatan aplikasi dengan framework Flutter.
+A clean, modern mobile news and editorial application built with Flutter, designed to deliver curated educational insights, latest updates, and informative articles with a smooth reading experience.
 
-Repositori ini hanya berisi kerangka awal aplikasi, yang mana logika aplikasinya (API, State Management) telah dikosongkan. 
+✨ Features
 
-## 🚀 Persiapan Awal
-1. Clone repositori ini.
-2. Buka proyek menggunakan VS Code atau Android Studio.
-3. Buka terminal, pastikan berada di folder proyek ini, lalu jalankan:
-   ```bash
-   flutter pub get
-   ```
-4. Ubah nama file `.env.example` menjadi `.env`.
-5. Ikuti **Modul Pembelajaran** yang telah diberikan oleh Trainer/Pengajar-mu.
+Curated News Feed: Browse categorized news and educational articles through a clean, distraction-free editorial interface.
 
-## 📁 Struktur Pengerjaan
-Kamu akan diinstruksikan oleh Trainer untuk mengisi file-file berikut secara bertahap:
-- `lib/data/models/article.dart`
-- `lib/core/constants/api_constants.dart`
-- `lib/data/services/news_api_service.dart`
-- `lib/data/repositories/news_repository.dart`
-- `lib/providers/...` (Semua file di folder ini)
-- Dan menyambungkan UI dengan State Management (`Riverpod`).
+Article Reader: Comfortable reading layout with structured typography and media support.
 
-Terdapat banyak komentar bertuliskan `// TODO:` di dalam kode. Ikuti panduan modul dan kerjakan TODO tersebut langkah demi langkah.
+Custom Branding & Splash Experience: Configured with adaptive launcher icons (including Android 13+ themed monochrome support) and a custom native splash screen.
 
-Semangat belajar dan Happy Coding! 🚀
+Responsive Design: Built using Material Design 3 principles for consistent performance across Android and iOS devices.
+
+🛠️ Tech Stack
+
+Framework: Flutter & Dart
+
+State Management: Riverpod
+
+Architecture: Clean & modular feature-based structure
+
+UI/UX: Material Design 3, custom editorial components
+
+Assets & Tooling: flutter_launcher_icons, flutter_native_splash
+
+📁 Project Structure
+
+lib/
+├── core/           # Constants, themes, network clients, and shared utilities
+├── features/       # Modularized app features (news feed, detail reader, etc.)
+└── main.dart         # Application entry point
+assets/
+└── logo/           # Adaptive launcher icons and splash screen assets
+
+
+
+🚀 Getting Started
+
+Prerequisites
+
+Flutter SDK (latest stable version)
+
+Dart SDK
+
+Android Studio / VS Code with Flutter & Dart extensions
+
+Installation
+
+Clone the repository:
+
+git clone https://github.com/[username-github-kamu]/[nama-repo-kamu].git
+cd warta-app-starter-main
+
+
+
+Install dependencies:
+
+flutter pub get
+
+
+
+Generate launcher icons & splash screen (if modified):
+
+dart run flutter_launcher_icons
+dart run flutter_native_splash:create
+
+
+
+Run the application:
+
+flutter run
+
+
+
+📄 License
+
+This project is developed for educational and portfolio purposes.
